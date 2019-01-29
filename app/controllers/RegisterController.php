@@ -77,7 +77,7 @@ class RegisterController extends Controller{
             $this->view->postAction = PROJECT_ROOT . 'register/login';
             $this->view->login = $loginModel;
             $this->view->displayErrors = $loginModel->getErrorMessages();
-            $this->view->render('register/login');
+            $this->view->render('register/login.1');
     }
         
         public function changepasswordAction(){

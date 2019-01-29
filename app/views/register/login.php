@@ -26,17 +26,7 @@ use Core\FH;
                                     </p>
                                 </div>
                             </div>
-                            <!-- <div class="field">
-                                <p class="control">
-                                    <a class="button is-dark is-medium is-fullwidth" href="/auth/github">
-                                        <span class="icon" >
-                                            <i class="fa fa-github"></i>
-                                        </span>
-                                        <span><strong>Log in with Github</strong></span>
-                                    </a>
-                                </p>
-                            </div>
-                            <div class="is-divider" data-content="OR LOG IN WITH"></div> -->
+                           
                             <?=FH::inputBlock('text','Username','username',$this->login->username,'Username',['class'=>'field is-5'],['class'=>'label'],['class'=>'input'],$this->displayErrors);?>
 
                             <?=FH::inputBlock('password','Password','password',$this->login->password,'Password',['class'=>'field is-5'],['class'=>'label'],['class'=>'input'],$this->displayErrors);?>
