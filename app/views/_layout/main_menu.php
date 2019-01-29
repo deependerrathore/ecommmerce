@@ -1,6 +1,9 @@
 <?php 
-    $menu = Router::getMenu('menu_acl');
-    $currentPage=  H::currentPage();
+use Core\Router;
+use Core\H;
+use App\Models\Users;
+$menu = Router::getMenu('menu_acl');
+$currentPage=  H::currentPage();
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="<?=PROJECT_ROOT?>home"><?=MENU_BRAND?></a>
