@@ -106,9 +106,9 @@ class FH {
     public static function blockErrors($inputAttr ,$errors,$name){
         if (array_key_exists($name,$errors)) {
            if (array_key_exists('class',$inputAttr)) {
-               $inputAttr['class'] .= " is-danger";
+               $inputAttr['class'] .= " is-invalid";
            }else{
-               $inputAttr['class'] = "is-danger";
+               $inputAttr['class'] = "is-invalid";
            }
         }
 
