@@ -1,0 +1,20 @@
+{
+    "Guest":{
+        "denied" : {},
+        "Register": ["login","register","forgotpassword","resetpassword"],
+        "Restricted": ["*"],
+        "Home" : ["*"]
+    },
+    "LoggedIn":{
+        "denied":{
+            "Register":["login","register","forgotpassword","resetpassword"]
+        },
+        "Register":["logout","changepassword"],
+        "Tools" : ["*"],
+        "Profile":["*"],
+        "Topic" :["*"],
+        "Notification":["*"],
+        "Home" :["*"],
+        "Contacts":["*"]
+    }
+}
