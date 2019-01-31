@@ -47,7 +47,8 @@ class RegisterController extends Controller{
         }
         $this->view->newUser = $newUser;
         $this->view->displayErrors = $newUser->getErrorMessages();
-        $this->view->render('register/register.1');
+        $this->view->postAction = PROJECT_ROOT . 'register/register';
+        $this->view->render('register/register');
     }
     
     
@@ -77,7 +78,7 @@ class RegisterController extends Controller{
             $this->view->postAction = PROJECT_ROOT . 'register/login';
             $this->view->login = $loginModel;
             $this->view->displayErrors = $loginModel->getErrorMessages();
-            $this->view->render('register/login.1');
+            $this->view->render('register/login');
     }
         
         public function changepasswordAction(){

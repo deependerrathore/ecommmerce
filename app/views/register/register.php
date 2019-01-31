@@ -1,46 +1,50 @@
-<?php $this->setSiteTitle('Event Unacademy - Register');?>
-<?php $this->start('head'); ?>
+<?php 
+use Core\FH;
+?>
+
+<?php $this->setSiteTitle('eLive - Registration Page');?>
+<?php $this->start('head');?>
 <?php $this->end();?>
-
 <?php $this->start('body');?>
-
-<div class="container">
+<div class="container py-5">
     <div class="row">
-        <div class="col-md-6 offset-md-3 well">
-                <h3 class="text-center">Register To Your Account</h3>
-                <p class="text-center">Get Unlimited tips,response questions<br/> free all the time</p>
-                <form action="<?=PROJECT_ROOT?>register/register" class="form" method="POST">
-                    <div class="bg-danger"><?=$this->displayErrors?></div>
-                    <div class="form-group">
-                        <label for="fname">First Name</label>
-                        <input type="text" name="fname" id="fname" value="<?=$this->post['fname'];?>" class="form-control" />
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+
+                    <!-- form card login -->
+                    <div class="card rounded-0">
+                        <div class="card-header">
+                            <h3 class="mb-0">Registration</h3>
+                        </div>
+                        <div class="card-body">
+                            <form class="form" role="form" autocomplete="off" action=<?= $this->postAction;?> novalidate="" method="POST">
+                                <?=FH::csrfInput();?>
+                                <?=FH::inputBlock('text','First Name','fname',$this->newUser->fname,'First Name',['class'=>'form-control form-control-lg rounded-0'],['class' => 'form-group'],$this->displayErrors); ?>
+                                <?=FH::inputBlock('text','Last Name','lname',$this->newUser->lname,'Last Name',['class'=>'form-control form-control-lg rounded-0'],['class' => 'form-group'],$this->displayErrors); ?>
+                                <?=FH::inputBlock('email','Email','email',$this->newUser->email,'Email',['class'=>'form-control form-control-lg rounded-0'],['class' => 'form-group'],$this->displayErrors); ?>
+                                <?=FH::inputBlock('text','Username','username',$this->newUser->username,'Username',['class'=>'form-control form-control-lg rounded-0'],['class' => 'form-group'],$this->displayErrors); ?>
+                                <?=FH::inputBlock('password','Password','password',$this->newUser->password,'Password',['class'=>'form-control form-control-lg rounded-0'],['class' => 'form-group'],$this->displayErrors); ?>
+                                <?=FH::inputBlock('password','Confirm Password','confirm',$this->newUser->getConfirm(),'Confirm Password',['class'=>'form-control form-control-lg rounded-0'],['class' => 'form-group'],$this->displayErrors); ?>
+                                <?=FH::submitBlock('Register',['class'=>'btn btn-success btn-lg float-right'])?>
+                                <a class="btn btn-success btn-lg float-left" href="<?=PROJECT_ROOT?>register/login">Login here</a>
+
+                            </form>
+                        </div>
+                        <!--/card-block-->
                     </div>
-                    <div class="form-group">
-                        <label for="lname">Last Name</label>
-                        <input type="text" name="lname" id="lname" value="<?=$this->post['lname'];?>" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="text" name="email" id="email" value="<?=$this->post['email'];?>"  class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label for="username">Choose a Username</label>
-                        <input type="text" name="username" id="username" value="<?=$this->post['username'];?>" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Choose a Password</label>
-                        <input type="password" name="password" id="password" value="<?=$this->post['password'];?>" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label for="confirm">Confirm  Password</label>
-                        <input type="password" name="confirm" id="confirm" value="<?=$this->post['confirm'];?>" class="form-control" />
-                    </div>
-                    <button type="submit" class="btn btn-primary">Register</button>
-                    <div class="text-right">
-                        <a class="text-primary" href="<?=PROJECT_ROOT?>/register/login">Already have account? Login from here.</a>
-                    </div>
-                </form>
+                    <!-- /form card login -->
+
+                </div>
+
+
+            </div>
+            <!--/row-->
+
         </div>
-    </div>    
+        <!--/col-->
+    </div>
+    <!--/row-->
 </div>
+<!--/container-->
 <?php $this->end();?>
