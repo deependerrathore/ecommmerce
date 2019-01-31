@@ -47,7 +47,8 @@ class RegisterController extends Controller{
         }
         $this->view->newUser = $newUser;
         $this->view->displayErrors = $newUser->getErrorMessages();
-        $this->view->render('register/register.1');
+        $this->view->postAction = PROJECT_ROOT . 'register/register';
+        $this->view->render('register/register');
     }
     
     

@@ -13,45 +13,46 @@ class FH {
      * @param string $value (optional) The value of the input
      * @param string $placeholder placeholder for the text box
      * @param array $divAttrs (optional) attributes of the surrounding div
-     * @param array $labelAttrs (optional) attributes of the surrouding lable
      * @param array $inputAttrs (optional) attributes of the input
      * @param array $errors (optional) array of all errors
      * @return string returns an html string for input block
      */
-    public static function inputBlock($type , $label,$name,$value= '' , $placeholder ,$divAttrs=[],$labelAttrs=[],$inputAttrs=[],$errors=[]){
+    public static function inputBlock($type , $label,$name,$value= '' , $placeholder ,$inputAttrs=[],$divAttrs=[],$errors=[]){
         $inputAttrs = self::blockErrors($inputAttrs,$errors,$name);
-        //if(!empty($errors)) H::dnd($inputAttrs);
         $divString = self::stringfyAttrs($divAttrs);
         $inputString = self::stringfyAttrs($inputAttrs);
-        $labelString = self::stringfyAttrs($labelAttrs);
         $html = '<div ' . $divString . '>';
-        $html .= '<label '. $labelString .' for="'.$name.'">'.$label. '</label>';
-        $html .= '<div class="control">';
+        $html .= '<label for="'.$name.'">'.$label. '</label>';
         $html .= '<input type="'.$type.'" name="'.$name.'" id="'.$name.'" value="'.$value.'" placeholder="'. $placeholder.'" ' . $inputString. '/>';
-        $html .= '<span class="help is-danger">'. self::errorMsg($errors,$name).' </span>';
-        $html .= '</div>';
+        $html .= '<div class="invalid-feedback">'. self::errorMsg($errors,$name).' </div>';
         $html .= '</div>';
         return $html;
     }
     
-    public static function submitTag($buttonText,$divAttrs1=[],$divAttrs2 = [],$inputAttrs=[]){
+    /**
+     * Create a Submit request
+     *
+     * @param string $buttonText
+     * @param array $inputAttrs (optional) Attributes of input
+     * @param array $divAttrs (optional) Attribute of parent div
+     * @return string Returns an html string for submit button
+     */
+    public static function submitBlock($buttonText,$inputAttrs=[],$divAttrs=[]){
+        $html = '';
         $inputString = self::stringfyAttrs($inputAttrs);
-        $divString1 = self::stringfyAttrs($divAttrs1);
-        $divString2 = self::stringfyAttrs($divAttrs2);
-        $html = '<div '.$divString1. '>';
-        $html .= '<div '.$divString2. '>';
+        $divString = self::stringfyAttrs($divAttrs);
+        $html .= '<div ' . $divString . '>';
         $html .= '<button type="submit" value="'. $buttonText.'" ' . $inputString. '>'.$buttonText.'</button>';
         $html .= '</div>';
-        $html .= '</div>';
-        
         return $html;
     }
+    
+    
     public static function stringfyAttrs($attrs){
         $string = '';
         foreach($attrs as $key => $value){
             $string .= $key . '="' .$value . '"'; 
         }
-        
         return $string;
     }
     
@@ -105,9 +106,9 @@ class FH {
     public static function blockErrors($inputAttr ,$errors,$name){
         if (array_key_exists($name,$errors)) {
            if (array_key_exists('class',$inputAttr)) {
-               $inputAttr['class'] .= " is-danger";
+               $inputAttr['class'] .= " is-invalid";
            }else{
-               $inputAttr['class'] = "is-danger";
+               $inputAttr['class'] = "is-invalid";
            }
         }
 

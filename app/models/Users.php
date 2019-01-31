@@ -187,6 +187,12 @@ class Users extends Model{
         return true;
     }
     
+    /**
+     * Set the confirm password value
+     *
+     * @param string $value
+     * @return void
+     */
     public function setConfirm($value){
         $this->_confirm = FH::sanatize($value);
     }
