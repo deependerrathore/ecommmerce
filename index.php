@@ -4,7 +4,6 @@ use Core\Cookie;
 use Core\Router;
 use Core\H;
 use App\Models\Users;
-session_start();
 
 define('DS', DIRECTORY_SEPARATOR); //Windows = \ , Linux,Mac = /
 //define('ROOT',dirname(__FILE__)); //Path of the index file, C:\Dev&Test\www\PHP_FRAMEWORK\index.php
@@ -42,6 +41,8 @@ function autoload($className){
 
 //autoloading function
 spl_autoload_register('autoload');
+
+session_start();
 
 /**
  * Check for existing session and cookie so that user can be automatically login

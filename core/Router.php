@@ -30,7 +30,7 @@ class Router{
         array_shift($url);
 
         //ACL check
-        $grantAccess = true;// self::hasAccess($controller_name,$action_name); //Remove true to enable the ACL
+        $grantAccess = self::hasAccess($controller_name,$action_name); //Remove true to enable the ACL
 
         //if access is not granted then setting the controller to Restricted Controller.
         if(!$grantAccess){

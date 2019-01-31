@@ -27,8 +27,8 @@ use Core\FH;
                                     <input type="checkbox" class="form-check-input" name="remember_me" id="remember_me">
                                     <label class="form-check-label" for="remember_me">Remeber me</label>
                                 </div>
-                                <?=FH::submitBlock('Login',['class'=>'btn btn-success btn-lg float-right'])?>
-                                <a class="btn btn-success btn-lg float-left" href="<?=PROJECT_ROOT?>register/register">Register here</a>
+                                <?=FH::submitBlock('Login',['class'=>'btn btn-success btn-md float-right'])?>
+                                <a class="btn btn-success btn-md float-left" href="<?=PROJECT_ROOT?>register/register">Register here</a>
 
                             </form>
                         </div>

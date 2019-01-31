@@ -26,8 +26,8 @@ use Core\FH;
                                 <?=FH::inputBlock('text','Username','username',$this->newUser->username,'Username',['class'=>'form-control form-control-lg rounded-0'],['class' => 'form-group'],$this->displayErrors); ?>
                                 <?=FH::inputBlock('password','Password','password',$this->newUser->password,'Password',['class'=>'form-control form-control-lg rounded-0'],['class' => 'form-group'],$this->displayErrors); ?>
                                 <?=FH::inputBlock('password','Confirm Password','confirm',$this->newUser->getConfirm(),'Confirm Password',['class'=>'form-control form-control-lg rounded-0'],['class' => 'form-group'],$this->displayErrors); ?>
-                                <?=FH::submitBlock('Register',['class'=>'btn btn-success btn-lg float-right'])?>
-                                <a class="btn btn-success btn-lg float-left" href="<?=PROJECT_ROOT?>register/login">Login here</a>
+                                <?=FH::submitBlock('Register',['class'=>'btn btn-success btn-md float-right'])?>
+                                <a class="btn btn-success btn-md float-left" href="<?=PROJECT_ROOT?>register/login">Login here</a>
 
                             </form>
                         </div>
