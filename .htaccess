@@ -1,3 +1,5 @@
+Options -Indexes
+
 RewriteEngine On
 
 #request filename is not a directory

@@ -1,6 +1,6 @@
-<?php $this->setSiteTitle("Catan");?>
+<?php $this->setSiteTitle($this->product->title);?>
 <?php $this->start('body');?>
-<h1>Catan</h1>
+<h1><?=$this->product->title?></h1>
 <div class="row">
     <!-- Column 1 -->
     <div class="col-md-6">
@@ -10,11 +10,12 @@
     </div>
     <!-- Column 2 -->
     <div class="col-md-6">
-        <p><span>Price: </span>$50.00</p>
-        <p><span>Shipping: </span>$4.00</p>
-        <p><span>Total: </span>$54.00</p>
-        <p><span>Vendor: </span>Flipkart</p>
-        <p><span>Brand: </span>JJ</p>
+        <p><span>List Price: </span><?=$this->product->list_price?></p>
+        <p><span>Our Price: </span><?=$this->product->price?></p>
+        <p><span>Shipping: </span><?=$this->product->shipping?></p>
+        <p><span>Total: </span><?=$this->product->totalPrice()?></p>
+        <p><span>Vendor: </span><?=$this->product->vendor?></p>
+        <p><span>Brand: </span><?=$this->product->brand?></p>
         <div class="text-center">   
             <button class="btn btn-large btn-danger" onclick="console.log('Add to class')">
             <i class="fa fa-cart-plus" aria-hidden="true"></i> Add to cart
@@ -27,7 +28,7 @@
     <div class="col-md-6">
         <h3>Prodct Description</h3>
         <p>
-            Catan is one of the funniest board cames you will ever play..enjoyed by millions WORLD WIDE.
+            <?= nl2br($this->product->description)?>
         </p>
     </div>
     <!-- Review Comments -->
