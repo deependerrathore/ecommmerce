@@ -56,6 +56,12 @@ class Model{
         ]);
     }
 
+    /**
+     * save funtion inserts or updates the record based opon condtion if id already exists in database or not
+     * Also it run the validator in extended classed so only if validator passes then only it will save the record
+     *
+     * @return boolean 
+     */
     public function save(){
 
         $this->validator();
