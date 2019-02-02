@@ -101,12 +101,21 @@ class Model{
         if($id == '' && $this->id == '') return false;
 
         $id = ($id == '') ? $this->id : $id;
-
-        if($this->_softDelete){
-            return $this->update($id,['deleted' => 1]);
+        if ($this->beforeDelete()) {
+            if($this->_softDelete){
+                $delete = $this->update($id,['deleted' => 1]);
+            }else{
+                $delete = $this->_db->delete($this->_table,$id);
+            }
+            if ($delete) {
+                $this->afterDelete();
+            }    
         }else{
-            return $this->_db->delete($this->_table,$id);
+            $delete = false;
         }
+
+        return $delete;
+        
     }
 
     public function query($sql,$bind = []){
@@ -168,5 +177,26 @@ class Model{
     public function beforeSave(){}
     
     public function afterSave(){}
+
+    /**
+     * Runs before delete needs to return a boolean
+     *
+     * @return boolean
+     */
+    public function beforeDelete(){
+        return true;
+    }
+    
+    public function afterDelete(){}
+
+    public function timeStamps(){
+        date_default_timezone_set("UTC"); 
+
+        $now = date('Y-m-d H:i:s');
+        $this->updated_at = $now;
+        if (empty($this->id)) {
+            $this->created_at = $now;
+        }
+    }
 
 }

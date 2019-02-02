@@ -1,5 +1,6 @@
 {
     "Home":"home",
     "Login": "register/login",
+    "Admin": "admindashboard/index",
     "Logout": "register/logout"
 }
