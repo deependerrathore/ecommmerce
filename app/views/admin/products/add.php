@@ -1,4 +1,13 @@
 <?php $this->setSiteTitle('Add Product');?>
+<?php $this->start('head');?>
+<script src="<?=PROJECT_ROOT?>vendor/tinymce/tinymce/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector: '#description',
+        branding: false
+    });
+</script>
+<?php $this->end();?>
 <?php $this->start('body');?>
 <h1>Add New Product</h1>
 

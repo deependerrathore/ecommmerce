@@ -2,6 +2,7 @@
 
 namespace Core;
 use Core\Session;
+use Core\H;
 class FH {
 
     /**
@@ -47,7 +48,45 @@ class FH {
         return $html;
     }
     
-    
+    /**
+     * Create a textarea block
+     *
+     * @param string $label Text for the label
+     * @param string $name id and name of the textarea
+     * @param string $value value of the text area
+     * @param string $placeholder placeholder value for textarea
+     * @param array $inputAttrs (optional) Attributes for text area
+     * @param array $divAttrs (optional) Attributes for surrounding div tag 
+     * @param array $errors (optional) Pass in the forms errors
+     * @return string
+     */
+    public static function textareaBlock($label,$name,$value,$placeholder,$inputAttrs=[],$divAttrs,$errors=[]){
+        $html = '';
+        $inputAttrs = self::blockErrors($inputAttrs,$errors,$name);
+        $divString = self::stringfyAttrs($divAttrs);
+        $inputString = self::stringfyAttrs($inputAttrs);
+        $html .= '<div ' . $divString . '>';
+        $html .= '<label for="'.$name.'">'.$label. '</label>';
+        $html .= '<textarea placeholder="'.$placeholder.'" id="'.$name.'" name="'.$name.'"'.$inputString.'>'.$value.'</textarea>';
+        $html .= '<div class="invalid-feedback">'. self::errorMsg($errors,$name).' </div>';
+        $html .= '</div>';
+        return $html;
+        
+        
+    }
+
+    public static function imageuploadBlock($type , $label,$name,$value= '' ,$inputAttrs=[],$divAttrs=[],$errors=[]){
+        $inputAttrs = self::blockErrors($inputAttrs,$errors,$name);
+        $divString = self::stringfyAttrs($divAttrs);
+        $inputString = self::stringfyAttrs($inputAttrs);
+        $html = '<div ' . $divString . '>';
+        $html .= '<label for="'.$name.'">'.$label. '</label>';
+        $html .= '<input type="'.$type.'" name="'.$name.'" id="'.$name.'" value="'.$value.'" ' . $inputString. '/>';
+        $html .= '<div class="invalid-feedback">'. self::errorMsg($errors,$name).' </div>';
+        $html .= '</div>';
+        return $html;
+        
+    }
     public static function stringfyAttrs($attrs){
         $string = '';
         foreach($attrs as $key => $value){
