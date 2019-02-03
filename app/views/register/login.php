@@ -23,10 +23,8 @@ use Core\FH;
                                 <?=FH::inputBlock('text','Username','username',$this->login->username,'Username',['class'=>'form-control form-control-lg rounded-0'],['class' => 'form-group'],$this->displayErrors); ?>
                                 <?=FH::inputBlock('password','Password','password',$this->login->password,'Password',['class'=>'form-control form-control-lg rounded-0'],['class' => 'form-group'],$this->displayErrors); ?>
                                 
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" name="remember_me" id="remember_me">
-                                    <label class="form-check-label" for="remember_me">Remeber me</label>
-                                </div>
+
+                                <?=FH::checkboxBlock('Remember Me','remember_me',$this->login->getRememberMeChecked(),['class'=>'form-check-input'],['class'=>'form-group form-check']);?>
                                 <?=FH::submitBlock('Login',['class'=>'btn btn-success btn-md float-right'])?>
                                 <a class="btn btn-success btn-md float-left" href="<?=PROJECT_ROOT?>register/register">Register here</a>
 
