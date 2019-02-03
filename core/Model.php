@@ -1,7 +1,7 @@
 <?php
 
 namespace Core;
-
+use Core\H;
 class Model{
     protected $_db,$_table,$_modelName,$_softDelete=false,$_validates=true, $_validationErrors=[];
 
@@ -56,6 +56,12 @@ class Model{
         ]);
     }
 
+    /**
+     * save funtion inserts or updates the record based opon condtion if id already exists in database or not
+     * Also it run the validator in extended classed so only if validator passes then only it will save the record
+     *
+     * @return boolean 
+     */
     public function save(){
 
         $this->validator();
@@ -95,12 +101,21 @@ class Model{
         if($id == '' && $this->id == '') return false;
 
         $id = ($id == '') ? $this->id : $id;
-
-        if($this->_softDelete){
-            return $this->update($id,['deleted' => 1]);
+        if ($this->beforeDelete()) {
+            if($this->_softDelete){
+                $delete = $this->update($id,['deleted' => 1]);
+            }else{
+                $delete = $this->_db->delete($this->_table,$id);
+            }
+            if ($delete) {
+                $this->afterDelete();
+            }    
         }else{
-            return $this->_db->delete($this->_table,$id);
+            $delete = false;
         }
+
+        return $delete;
+        
     }
 
     public function query($sql,$bind = []){
@@ -116,14 +131,25 @@ class Model{
         return $data;
     }
 
-    public function assign($params = []){
+    public function assign($params = [],$list=[],$blackList = true){
+
         if(!empty($params)){
             foreach($params as $key => $value){
-                if(property_exists($this,$key)){
+                //check if there is permission to update the object
+                $whiteListed =  true;
+                if(sizeof($list) > 0){
+                    if ($blackList) {
+                        $whiteListed = !in_array($key,$list);
+                    }else{
+                        $whiteListed = in_array($key,$list);
+                    }
+                }
+                if(property_exists($this,$key) && $whiteListed){
                     $this->$key = $value;
                 }
             }
         }
+        return $this;
     }
     protected function populateObjData($result){
         foreach($result as $key => $value){
@@ -162,5 +188,26 @@ class Model{
     public function beforeSave(){}
     
     public function afterSave(){}
+
+    /**
+     * Runs before delete needs to return a boolean
+     *
+     * @return boolean
+     */
+    public function beforeDelete(){
+        return true;
+    }
+    
+    public function afterDelete(){}
+
+    public function timeStamps(){
+        date_default_timezone_set("UTC"); 
+
+        $now = date('Y-m-d H:i:s');
+        $this->updated_at = $now;
+        if (empty($this->id)) {
+            $this->created_at = $now;
+        }
+    }
 
 }

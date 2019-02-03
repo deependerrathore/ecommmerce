@@ -11,5 +11,10 @@
         },
         "Register":["logout"],
         "Products": ["*"]
+    },
+    "SuperAdmin":{
+        "denied":{},
+        "Admindashboard":["*"],
+        "Adminproducts" : ["*"]
     }
 }
