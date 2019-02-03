@@ -131,14 +131,25 @@ class Model{
         return $data;
     }
 
-    public function assign($params = []){
+    public function assign($params = [],$list=[],$blackList = true){
+
         if(!empty($params)){
             foreach($params as $key => $value){
-                if(property_exists($this,$key)){
+                //check if there is permission to update the object
+                $whiteListed =  true;
+                if(sizeof($list) > 0){
+                    if ($blackList) {
+                        $whiteListed = !in_array($key,$list);
+                    }else{
+                        $whiteListed = in_array($key,$list);
+                    }
+                }
+                if(property_exists($this,$key) && $whiteListed){
                     $this->$key = $value;
                 }
             }
         }
+        return $this;
     }
     protected function populateObjData($result){
         foreach($result as $key => $value){
