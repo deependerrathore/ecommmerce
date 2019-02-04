@@ -200,4 +200,28 @@ class Users extends Model{
     public function getConfirm(){
         return $this->_confirm;
     }
+
+    public static function addAcl($user_id,$acl){
+        $user = self::findById($user_id);
+        if(!user) return false;
+        $acls = $user->acls();
+        if (!in_array($acl,$acls)) {
+            $acls[] =$acl;
+            $user->acl = json_encode($acls);
+            $user->save();
+        }
+        return true;
+    }
+
+    public static function removeAcl($user_id,$acl){
+        $user = self::findById($user_id);
+        if (!$user) return false;
+        $acls = $user->acls();
+        if (in_array($acl,$acls)) {
+            $key = array_search($acl,$acls);
+            unset($acls[$key]);
+            $user->acl = json_encode($acls);
+            $user->save();
+        }
+    }
 }

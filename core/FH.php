@@ -104,7 +104,7 @@ class FH {
         $checkString = ($checked) ? ' checked="checked"' : '';
         $html = '<div ' .$divString. '>';
         $html .= '<input type="checkbox" '.$inputString . $checkString . ' id="' .$name. '" name="'.$name.'" value="on">';
-        $html .= '<label class="form-check-label" for="'.$name.'">'.$label.'</label>';
+        $html .= '<label class="custom-control-label" for="'.$name.'">'.$label.'</label>';
         $html .= '</div>';
 
         return $html;

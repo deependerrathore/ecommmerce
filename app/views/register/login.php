@@ -24,7 +24,7 @@ use Core\FH;
                                 <?=FH::inputBlock('password','Password','password',$this->login->password,'Password',['class'=>'form-control form-control-lg rounded-0'],['class' => 'form-group'],$this->displayErrors); ?>
                                 
 
-                                <?=FH::checkboxBlock('Remember Me','remember_me',$this->login->getRememberMeChecked(),['class'=>'form-check-input'],['class'=>'form-group form-check']);?>
+                                <?=FH::checkboxBlock('Remember Me','remember_me',$this->login->getRememberMeChecked(),['class'=>'custom-control-input'],['class'=>'custom-control custom-checkbox mr-sm-2']);?>
                                 <?=FH::submitBlock('Login',['class'=>'btn btn-success btn-md float-right'])?>
                                 <a class="btn btn-success btn-md float-left" href="<?=PROJECT_ROOT?>register/register">Register here</a>
 
