@@ -27,7 +27,7 @@ class Input{
           //return entire reqest array and sanatize it
           $data = [];
           foreach($_REQUEST as $field => $value){
-              $data[$field] = FH::sanatize($value);
+              $data[$field] = trim(FH::sanatize($value));
           } 
           return $data; 
         }

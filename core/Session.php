@@ -28,7 +28,7 @@ class Session{
         return $newString;
     }
 
-    //need to fix this if not working
+    
     public static function displayMsg(){
         $alerts = ['is-info','is-success','is-warning','is-danger'];
         $html = '';

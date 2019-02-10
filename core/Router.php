@@ -158,16 +158,11 @@ class Router{
         if(preg_match('/https?:\/\//',$val) == 1){
             return $val;
         }else{
-            if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN'){
-                $ds = '/';
-            }else{
-                $ds = '\\';
-            }
-            $uAry = explode($ds ,$val); //We have to use $ds instead of DS because in json file we are giving tools[/]first where as in windows DS will be [\]
-             $controller_name = ucwords($uAry[0]);
+            
+            $uAry = explode('/' ,$val); //We have to use $ds instead of DS because in json file we are giving tools[/]first where as in windows DS will be [\]
+            $controller_name = ucwords($uAry[0]);
             $action_name = (isset($uAry[1])) ? $uAry[1] : '';
             if (self::hasAccess($controller_name,$action_name)) {
-                
                 return PROJECT_ROOT . $val;
             }
             return false;

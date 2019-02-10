@@ -13,12 +13,19 @@ class Controller extends Application{
         $this->_action = $action;
         $this->request = new Input();
         $this->view = new View();
+        $this->onConstruct();
     }
 
-    protected function load_model($model){
-        $modelPath = "App\Models\\" . $model;
-        if(class_exists($modelPath)){
-            $this->{$model.'Model'} = new $modelPath(strtolower($model));  
-        }
+    /**
+     * Called when a controller object is constructed
+     */
+    public function onConstruct(){}
+
+    public function jsonResponse($resp){
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json; charset=UTF-8");
+        http_response_code(200);
+        echo json_encode($resp);
+        exit();
     }
 }
