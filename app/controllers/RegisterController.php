@@ -23,9 +23,9 @@ class RegisterController extends Controller{
         if($this->request->isPost()){
             $this->request->csrfCheck();
 
-            $newUser->assign($this->request->get());
+            $newUser->assign($this->request->get(),Users::blackListedFromKeys);
 
-            $newUser->setConfirm($this->request->get('confirm'));
+            $newUser->confirm = $this->request->get('confirm');
             if($newUser->save()){
                 Router::redirect('register/login');
             }
