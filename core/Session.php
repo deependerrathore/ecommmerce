@@ -28,6 +28,7 @@ class Session{
         return $newString;
     }
 
+    
     public static function displayMsg(){
         $alerts = ['is-info','is-success','is-warning','is-danger'];
         $html = '';
@@ -50,7 +51,7 @@ class Session{
      * @param [string] $message is the actual message to be displayed
      * @return void
      */
-    public static function addMsg($type,$msg){
+    public static function addMsg($type = 'info',$msg){
         $sessionName = 'is-' . $type;
         self::set($sessionName,$msg);
     }

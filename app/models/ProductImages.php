@@ -18,8 +18,8 @@ class ProductImages extends Model{
         $errors = []; 
         $maxSize = 5242880;
         
-        //$allowedTypes = ['IMAGETYPE_GIF','IMAGETYPE_JPEG','IMAGETYPE_PNG']; 
-        $allowedTypes = [1,2,3]; 
+        $allowedTypes = [IMAGETYPE_GIF,IMAGETYPE_JPEG,IMAGETYPE_PNG]; 
+        //$allowedTypes = [1,2,3]; 
 
         foreach($files as $file){
             $name = $file['name'];

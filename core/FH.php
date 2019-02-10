@@ -87,6 +87,29 @@ class FH {
         return $html;
         
     }
+
+    /**
+     * checkbox block
+     *
+     * @param string $label
+     * @param string $name
+     * @param boolean $checked 
+     * @param array $inputAttrs (optional) form-check-input for bootstrap
+     * @param array $divAttrs (optional) form-check for bootstrap
+     * @return string returns the html for checkbox
+     */
+    public static function checkboxBlock($label,$name,$checked=false,$inputAttrs=[],$divAttrs=[]){
+        $divString = self::stringfyAttrs($divAttrs);
+        $inputString = self::stringfyAttrs($inputAttrs);
+        $checkString = ($checked) ? ' checked="checked"' : '';
+        $html = '<div ' .$divString. '>';
+        $html .= '<input type="checkbox" '.$inputString . $checkString . ' id="' .$name. '" name="'.$name.'" value="on">';
+        $html .= '<label class="custom-control-label" for="'.$name.'">'.$label.'</label>';
+        $html .= '</div>';
+
+        return $html;
+
+    }
     public static function stringfyAttrs($attrs){
         $string = '';
         foreach($attrs as $key => $value){

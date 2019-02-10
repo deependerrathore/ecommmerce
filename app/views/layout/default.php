@@ -1,5 +1,6 @@
 <?php 
 use Core\Router;
+use Core\Session;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +19,7 @@ use Core\Router;
 <body>
     <?php include('main_menu.php'); ?>
     <div class="container-fluid" style="min-height:cal(100% - 125px);">
+        <?=Session::displayMsg();?>
         <?=$this->content('body');?>
     </div>
 </body>

@@ -18,40 +18,18 @@ use Core\Validators\MatchesValidator;
 use Core\Validators\UsernameValidator;
 
 class Users extends Model{
-    private $_isLoggedIn, $_sessionName , $_cookieName, $_confirm;
-
-    public $id, $username,$password,$email,$fname,$lname,$acl,$deleted=0,$whenaccountcreated ,$verified = 0,$profileimg;
-
+    protected static $_table='users', $_softDelete = true;
     public static $currentLoggedInUser = null;
 
-    public function __construct($user = ''){
-        $table = 'users';
-        parent::__construct($table);
+    private $_isLoggedIn, $_sessionName , $_cookieName;
+
+    public $id, $username,$password,$email,$fname,$lname,$acl,$deleted=0,$whenaccountcreated ,$verified = 0,$profileimg,$confirm;
+
+    const blackListedFromKeys = ['id','deleted'];
+
+    public function __construct(){
         $this->_sessionName = CURRENT_USER_SESSION_NAME;
         $this->_cookieName = REMEMBER_ME_COOKIE_NAME;
-        $this->_softDelete = true;
-        if($user != ''){
-            if(is_int($user)){
-                $u = $this->_db->findFirst('users',[
-                    'conditions' => ['id = ?'],
-                    'bind' => [$user],
-                    'Users'
-                ]);
-            }else{
-                $u = $this->_db->findFirst('users',[
-                    'conditions' => ['username = ?'],
-                    'bind' => [$user],
-                    'Users'
-                ]);
-            }
-            if($u){
-                foreach($u as $key => $value){
-                    $this->$key = $value;
-                }
-            }
-
-        }
-
     }
 
     public function validator(){
@@ -68,29 +46,34 @@ class Users extends Model{
         $this->runValidation(new UsernameValidator($this,['field'=>'username','msg'=>'Username must be valid. only _ is acceptable as special character.']));
 
         $this->runValidation(new RequiredValidator($this,['field'=>'password','msg' => 'Password is required.']));
-        $this->runValidation(new MatchesValidator($this,['field'=>'password','rule'=>$this->_confirm,'msg'=>'Password and confirm password do not match.']));
+        if ($this->isNew()) {
+            $this->runValidation(new MatchesValidator($this,['field'=>'password','rule'=>$this->confirm,'msg'=>'Password and confirm password do not match.']));
+        }
         $this->runValidation(new MinValidator($this,['field'=>'password','rule'=>6,'msg'=>'Password should be at least 6 characters.']));
 
 
     }
 
     public function beforeSave(){
-        $this->fname = ucfirst($this->fname);
-        $this->lname = ucfirst($this->lname);
-        $this->password = password_hash($this->password,PASSWORD_DEFAULT);
-        $this->whenaccountcreated = date('Y-m-d H:i:s');
-        $this->profileimg = 'default';
+        if ($this->isNew()) {
+            $this->fname = ucfirst($this->fname);
+            $this->lname = ucfirst($this->lname);
+            $this->password = password_hash($this->password,PASSWORD_DEFAULT);
+            $this->whenaccountcreated = date('Y-m-d H:i:s');
+            $this->profileimg = 'default';
+        }
+        
     }
 
-    public function findByUsername($username){
-        return $this->findFirst([
+    public static function findByUsername($username){
+        return self::findFirst([
             'conditions' => 'username = ?',
             'bind' => [$username]
         ]);
     }
 
-    public function findByEmail($email){
-        return $this->findFirst([
+    public static function findByEmail($email){
+        return self::findFirst([
             'conditions' => 'email = ?',
             'bind' => [$email]
         ]);
@@ -98,16 +81,12 @@ class Users extends Model{
 
     public static function currentUser(){
         if(!isset(self::$currentLoggedInUser) && Session::exists(CURRENT_USER_SESSION_NAME)){
-
-            $u = new Users((int)Session::get(CURRENT_USER_SESSION_NAME));
-
-            self::$currentLoggedInUser = $u;
+            self::$currentLoggedInUser = self::findById((int)Session::get(CURRENT_USER_SESSION_NAME));
         }
         return self::$currentLoggedInUser;
     }
 
     public function login($rememberMe = false){
-
         //set the session with the ID
         Session::set($this->_sessionName,$this->id);
         
@@ -126,9 +105,9 @@ class Users extends Model{
                 'user_agent' =>$user_agent,
                 'user_id' => $this->id
             ];
-            $this->_db->query("DELETE FROM user_sessions WHERE user_id = ? AND user_agent = ?", [$this->id,$user_agent]);
+            self::$_db->query("DELETE FROM user_sessions WHERE user_id = ? AND user_agent = ?", [$this->id,$user_agent]);
 
-            $this->_db->insert('user_sessions',$fields);
+            self::$_db->insert('user_sessions',$fields);
         }   
     }
 
@@ -154,13 +133,11 @@ class Users extends Model{
      * @param boolean $allDevices pass TRUE to logout of the all devices
      * @return boolean
      */
-    public function logout($allDevices = false){
-        if ($allDevices) {
-            UserSessions::deleteSessionsForAllDevice();
-        }else{
-            $userSession = UserSessions::getFromCookie();
-            if($userSession) $userSession->delete();
-        }
+    public function logout(){
+        
+        $userSession = UserSessions::getFromCookie();
+        if ($userSession) $userSession->delete();
+      
         Session::delete(CURRENT_USER_SESSION_NAME);
         if (Cookie::exists(REMEMBER_ME_COOKIE_NAME)) {
             Cookie::delete(REMEMBER_ME_COOKIE_NAME, REMEMBER_ME_COOKIE_EXPIRY);
@@ -174,30 +151,32 @@ class Users extends Model{
         if(empty($this->acl)) return [];
         return json_decode($this->acl,true);
     }
+    
+    
 
-    public function changePassword($userid,$params){
-        // $user = new Users(currentUser()->id);
-        // $user->password = password_hash($params['newpassword'],PASSWORD_DEFAULT);
-        // $user->save();
-        $changedPassword = password_hash($params['newpassword'],PASSWORD_DEFAULT);
-        $fields = [
-            'password' => $changedPassword
-        ];
-        $this->update($userid,$fields);
+    public static function addAcl($user_id,$acl){
+
+        $user = self::findById($user_id);
+        if(!$user) return false;
+        $acls = $user->acls();
+        if (!in_array($acl,$acls)) {
+            $acls[] =$acl;
+            $user->acl = json_encode($acls);
+            $user->save();
+        }
+
         return true;
     }
-    
-    /**
-     * Set the confirm password value
-     *
-     * @param string $value
-     * @return void
-     */
-    public function setConfirm($value){
-        $this->_confirm = FH::sanatize($value);
-    }
 
-    public function getConfirm(){
-        return $this->_confirm;
+    public static function removeAcl($user_id,$acl){
+        $user = self::findById($user_id);
+        if (!$user) return false;
+        $acls = $user->acls();
+        if (in_array($acl,$acls)) {
+            $key = array_search($acl,$acls);
+            unset($acls[$key]);
+            $user->acl = json_encode($acls);
+            $user->save();
+        }
     }
 }
