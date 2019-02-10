@@ -9,11 +9,10 @@ class Model{
     protected $_modelName,$_validates=true, $_validationErrors=[];
     public $id;
 
-    protected $_db,$_table,$_softDelete=false;
+    protected static $_db,$_table,$_softDelete=false;
 
-    public function __construct($table){
+    public function __construct(){
         $this->_modelName = str_replace(' ','',ucwords(str_replace('_',' ',static::$_table))); //example user_sessions = UserSessions
-        $this->onConstruct();
     }
 
     public static function getDb(){
@@ -121,12 +120,11 @@ class Model{
         $this->validator();
         $save = false;
         if($this->_validates){
-
+            
             $this->beforeSave();
-
+            
             $fields = $this->getColumnsForSave();
-
-
+            
             //Determine whether to update or insert
             if($this->isNew()){
                 $save = $this->insert($fields);
@@ -158,7 +156,7 @@ class Model{
 
 
     public function update($fields){
-        if (empty($fields) || $id == '') return false;
+        if (empty($fields) || $this->id == '') return false;
         return static::getDb()->update(static::$_table,$this->id,$fields);
     }
 
@@ -168,9 +166,9 @@ class Model{
         $this->beforeDelete();
 
         if (static::$_softDelete) {
-            $deleted = $this->update($id, ['deleted' => 1]);
+            $deleted = $this->update(['deleted' => 1]);
         } else {
-            $d = static::getDb()->delete($this->_table, $this->id);
+            $d = static::getDb()->delete(static::$_table, $this->id);
         }
         
         $this->afterDelete();

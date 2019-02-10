@@ -2,6 +2,7 @@
 
 namespace Core;
 use Core\Application;
+use Core\H;
 
 class Controller extends Application{
     protected $_controller , $_action;
