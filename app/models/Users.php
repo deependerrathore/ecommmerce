@@ -81,10 +81,7 @@ class Users extends Model{
 
     public static function currentUser(){
         if(!isset(self::$currentLoggedInUser) && Session::exists(CURRENT_USER_SESSION_NAME)){
-
-            $u = new Users((int)Session::get(CURRENT_USER_SESSION_NAME));
-
-            self::$currentLoggedInUser = $u;
+            self::$currentLoggedInUser = self::findById((int)Session::get(CURRENT_USER_SESSION_NAME));
         }
         return self::$currentLoggedInUser;
     }
